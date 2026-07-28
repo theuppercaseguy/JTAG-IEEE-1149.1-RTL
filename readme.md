@@ -96,6 +96,11 @@ The design follows the standard IEEE 1149.1 architecture and separates every log
 <img src="docs/images/jtag_architecture.png" width="100%">
 </p>
 
+<p align="center">
+  <img src="docs/images/TAP_FSM.png" width="47%">
+  &nbsp;&nbsp;
+  <img src="docs/images/BSC_ARCH.png" width="47%">
+</p>
 The top-level architecture consists of the following RTL blocks:
 
 | Module | Description |
