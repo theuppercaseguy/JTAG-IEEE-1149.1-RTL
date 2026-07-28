@@ -300,59 +300,6 @@ For standalone verification without a user core, simply enable
 and the Boundary Scan chain will automatically bypass the user logic.
 
 ---
-# Compilation
-
-The RTL is simulator independent and should compile on any IEEE-compliant SystemVerilog simulator.
-
-The project has been developed and verified using:
-
-| Tool | Version |
-|------|---------|
-| Siemens QuestaSim | 2026.1 |
-| Truechip IEEE 1149.1 VIP | 25.3 |
-
----
-
-## Compile Order
-
-Compile the source files in the following order.
-
-```text
-jtag_defines.svh
-jtag_package.sv
-jtag_interface.sv
-shift_register.sv
-shift_ir.sv
-bsc.sv
-instr_decoder.sv
-TAP_FSM.sv
-TDR.sv
-JTAG_top.sv
-Testbench
-```
-
-Maintaining this order ensures that packages, interfaces, typedefs, and parameter definitions are available before dependent modules are compiled.
-
----
-
-# Example Compilation (QuestaSim)
-
-```bash
-# Compile
-vlog -sv -f file.f
-
-# Optimize (preserve full debug visibility)
-vopt tb_top -o tb_top_opt +acc
-
-# Start simulation
-vsim -voptargs=+acc tb_top_opt
-
-# Run until completion
-run -all
-```
-
----
-
 # Running Verification
 
 The RTL has been validated using the **Truechip IEEE 1149.1 JTAG VIP**.
@@ -453,18 +400,90 @@ Each waveform will include:
 - Pin Behavior
 - Explanation of Each State Transition
 
+<table width="100%">
+<tr>
+
+<td align="center" width="50%">
+<img src="docs/waveforms/bypass.png" width="95%"><br>
+<b>BYPASS</b>
+</td>
+
+<td align="center" width="50%">
+<img src="docs/waveforms/idcode.png" width="95%"><br>
+<b>IDCODE</b>
+</td>
+
+</tr>
+
+<tr>
+
+<td align="center" width="50%">
+<img src="docs/waveforms/sample.png" width="95%"><br>
+<b>SAMPLE</b>
+</td>
+
+<td align="center" width="50%">
+<img src="docs/waveforms/preload.png" width="95%"><br>
+<b>PRELOAD</b>
+</td>
+
+</tr>
+</table>
 ---
 
-## Motivation
+# Compilation
+The RTL is simulator independent and should compile on any IEEE-compliant SystemVerilog simulator.
+The project has been developed and verified using:
 
+| Tool | Version |
+|------|---------|
+| Siemens QuestaSim | 2026.1 |
+| Truechip IEEE 1149.1 VIP | 25.3 |
+
+---
+## Compile Order
+Compile the source files in the following order.
+
+```text
+jtag_defines.svh
+jtag_package.sv
+jtag_interface.sv
+shift_register.sv
+shift_ir.sv
+bsc.sv
+instr_decoder.sv
+TAP_FSM.sv
+TDR.sv
+JTAG_top.sv
+Testbench
+```
+
+Maintaining this order ensures that packages, interfaces, typedefs, and parameter definitions are available before dependent modules are compiled.
+---
+
+# Example Compilation (QuestaSim)
+
+```bash
+# Compile
+vlog -sv -f file.f
+
+# Optimize (preserve full debug visibility)
+vopt tb_top -o tb_top_opt +acc
+
+# Start simulation
+vsim -voptargs=+acc tb_top_opt
+
+# Run until completion
+run -all
+```
+---
+## Motivation
 This project was developed to gain a complete understanding of IEEE 1149.1 by implementing every architectural block from scratch instead of relying on vendor IP. The design emphasizes readability, modularity, configurability, and verification using an industry-standard JTAG VIP.
 
 ## Why this implementation?
-
 Unlike many educational JTAG examples that implement only BYPASS or IDCODE, this project implements the complete TAP architecture, parameterized Boundary Scan Register, configurable Instruction Register, and multiple Test Data Registers while remaining IEEE 1149.1 compliant and verified using an industrial verification IP.
 
 # Repository Structure
-
 ```text
 .
 ├── rtl/
@@ -496,7 +515,6 @@ Unlike many educational JTAG examples that implement only BYPASS or IDCODE, this
 ```
 
 ---
-
 # Design Highlights
 
 - Fully modular RTL architecture
@@ -513,9 +531,7 @@ Unlike many educational JTAG examples that implement only BYPASS or IDCODE, this
 - Commercial VIP verified
 
 ---
-
 # Future Improvements
-
 Planned enhancements include:
 
 - IEEE 1687 (IJTAG) support
@@ -528,15 +544,10 @@ Planned enhancements include:
 - User-defined instruction support
 - Additional verification environments
 - FPGA reference design
-
 ---
-
 # Contributing
-
 Contributions are welcome.
-
 Possible areas include:
-
 - Additional IEEE optional instructions
 - Improved documentation
 - More verification testcases
@@ -545,48 +556,30 @@ Possible areas include:
 - IJTAG extensions
 - BSDL generation
 - Performance optimizations
-
 Please open an Issue before submitting major architectural changes.
-
 ---
-
 # License
-
 This project is licensed under the **MIT License**.
-
 You are free to:
-
 - Use
 - Modify
 - Distribute
 - Commercially use
-
 the RTL under the terms of the MIT License.
-
 ---
-
 # Acknowledgements
 
 This implementation follows the **IEEE 1149.1 Standard (JTAG)**.
-
 Verification has been performed using the **Truechip IEEE 1149.1 JTAG Verification IP** on **Siemens QuestaSim 2026.1**.
-
 Special thanks to the IEEE working group for defining the JTAG standard and to Truechip for providing a comprehensive commercial verification environment.
-
 ---
 
 # Contact
-
 If you encounter a bug, have a feature request, or would like to contribute, please open a GitHub Issue.
-
 Suggestions, improvements, and pull requests are always welcome.
-
 ---
-
 # Project Status
-
 > **Current Status:** Stable
-
 - ✔ IEEE 1149.1 compliant
 - ✔ Fully synthesizable
 - ✔ Modular RTL
