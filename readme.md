@@ -223,13 +223,15 @@ Bridge Mode is especially useful for:
 The Boundary Scan Register consists of a serial chain of Boundary Scan Cells.
 
 ```text
-TDI
- │
- ▼  ( Input Boundary Scan Cells )
-[BSC0] → [BSC1] → [BSC2] → [BSC3] → [BSC4] → [BSC5] → [BSC6] → [BSC7] 
-                                    (Output Boundary Scan Cells) │
-                                                                 ▼
-                                                                TDO         
+                               INPUT BOUNDARY SCAN CELLS                         OUTPUT BOUNDARY SCAN CELLS
+
+        io_in[3]      io_in[2]       io_in[1]       io_in[0]      io_logic_out[3] io_logic_out[2] io_logic_out[1] io_logic_out[0]
+           │             │              │              │               │               │               │               │
+           ▼             ▼              ▼              ▼               ▼               ▼               ▼               ▼
+TDI ──▶ [BSC7] ─────▶ [BSC6] ─────▶ [BSC5] ─────▶ [BSC4] ───────▶ [BSC3] ──────▶ [BSC2] ───────▶ [BSC1] ──────▶ [BSC0] ──▶ TDO
+           │             │              │              │               │               │               │               │
+           ▼             ▼              ▼              ▼               ▼               ▼               ▼               ▼
+    io_logic_in[3]  io_logic_in[2] io_logic_in[1] io_logic_in[0]   io_out[3]       io_out[2]       io_out[1]        io_out[0]
 ```
 The register width is automatically determined from
 
