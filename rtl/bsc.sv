@@ -1,4 +1,19 @@
 //==============================================================================
+//  Project    : IEEE 1149.1 JTAG / IEEE 1687 IJTAG RTL Implementation
+//  Author     : Saad Khan
+//  Email      : saadan06@gmail.com
+//  GitHub     : https://github.com/theuppercaseguy
+//  LinkedIn   : https://www.linkedin.com/in/the-guy/
+//  Portfolio  : https://portfolio-saadkhan.vercel.app/
+//------------------------------------------------------------------------------
+//  Copyright (c) Saad Khan.
+//
+//  This project is open for educational, research, and commercial use.
+//  Redistribution and modification are permitted, provided appropriate
+//  credit is given to the original author and this repository is referenced.
+//==============================================================================
+
+//==============================================================================
 // Module      : bsc
 // Cell Type   : IEEE Std 1149.1 BSC_1 Boundary Scan Cell
 //
@@ -45,7 +60,8 @@ module bsc(
 
 	// Update register
 	// Latches captured/shifted value during UpdateDR
-	always_ff @(posedge update_dr)
+	always_ff @(negedge tclk)
+	if(update_dr)
 		update_ff_out <= capture_ff_out;
 
 	// MUX B:
