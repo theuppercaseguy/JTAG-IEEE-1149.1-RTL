@@ -451,7 +451,7 @@ jtag_defines.svh
 jtag_package.sv
 jtag_interface.sv
 shift_register.sv
-shift_ir.sv
+instr_register.sv
 bsc.sv
 instr_decoder.sv
 TAP_FSM.sv
@@ -463,19 +463,24 @@ Testbench
 Maintaining this order ensures that packages, interfaces, typedefs, and parameter definitions are available before dependent modules are compiled.
 ---
 
-# Example Compilation (QuestaSim)
+# Compilation (QuestaSim)
 
 ```bash
-# Compile
-vlog -sv -f file.f
+cd quest_simu
+vsim -do comp.do
+```
 
-# Optimize (preserve full debug visibility)
-vopt tb_top -o tb_top_opt +acc
+or manually
 
-# Start simulation
-vsim -voptargs=+acc tb_top_opt
+```tcl
+vlib work
+vmap work work
 
-# Run until completion
+vlog -mfcu -f ../rtl/file_list.f
+vopt ijtag_tb_top -o ijtag_tb_opt +acc
+vsim -l sim.log -wlf sim.wlf ijtag_tb_opt
+
+do ijtag_wave.do
 run -all
 ```
 ---
