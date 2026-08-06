@@ -1,0 +1,115 @@
+# vsim -l sim.log -wlf sim.wlf ijtag_tb_opt 
+# Start time: 14:43:28 on Aug 06,2026
+# Loading sv_std.std
+# Loading work.jtag_package(fast)
+# Loading work.jtag_defines_svh_unit(fast)
+# Loading work.jtag_tb_top(fast)
+# Loading work.jtag_inf(fast__1)
+# Loading work.JTAG_top(fast)
+# Loading work.TAP_FSM(fast)
+# Loading work.instr_shift_reg(fast)
+# Loading work.instr_decoder(fast)
+# Loading work.TDR(fast)
+# Loading work.shift_register(fast)
+# Loading work.bsc(fast)
+# ** Note: $finish    : ../tb/jtag_tb_top.sv(44)
+#    Time: 4700 ns  Iteration: 0  Instance: /jtag_tb_top
+# 1
+# Break in Module jtag_tb_top at ../tb/jtag_tb_top.sv line 44
+# couldn't load library "C:/questasim64_2024.1/win64/ScintillaTk/ScintillaTk114.dll": this library or a dependent library could not be found in library path
+# ** Error: list element in quotes followed by ":" instead of space
+# Error in macro ././comp.do line 6
+# list element in quotes followed by ":" instead of space
+#     while executing
+# "foreach val $retval { 
+# 						set wobj [$vsimPriv(windowmgr) FindWindowObj $val]
+# 						if { $wobj ne "" && [lsearch $windowobj_list $wobj] < 0 } {
+# 				..."
+#     (procedure "view" line 144)
+#     invoked from within
+# "view source"
+#     (procedure "run" line 107)
+#     invoked from within
+# "run -all"
+add wave -position insertpoint  \
+sim:/jtag_tb_top/jtag_top_inst/tdr/tclk \
+sim:/jtag_tb_top/jtag_top_inst/tdr/trst \
+sim:/jtag_tb_top/jtag_top_inst/tdr/tdi \
+sim:/jtag_tb_top/jtag_top_inst/tdr/shift_dr_en \
+sim:/jtag_tb_top/jtag_top_inst/tdr/capture_dr_en \
+sim:/jtag_tb_top/jtag_top_inst/tdr/update_dr_en \
+sim:/jtag_tb_top/jtag_top_inst/tdr/mode \
+sim:/jtag_tb_top/jtag_top_inst/tdr/tdr_selected \
+sim:/jtag_tb_top/jtag_top_inst/tdr/tdo \
+sim:/jtag_tb_top/jtag_top_inst/tdr/bypass_reg \
+sim:/jtag_tb_top/jtag_top_inst/tdr/id_code_par_out \
+sim:/jtag_tb_top/jtag_top_inst/tdr/id_code_ser_out \
+sim:/jtag_tb_top/jtag_top_inst/tdr/bsc_chain \
+sim:/jtag_tb_top/jtag_top_inst/tdr/bsr_capture_dr \
+sim:/jtag_tb_top/jtag_top_inst/tdr/bsr_update_dr \
+sim:/jtag_tb_top/jtag_top_inst/tdr/bsr_shift_dr
+restart -f
+# ** Note: (vsim-12125) Error and warning message counts have been reset to '0' because of 'restart'.
+# Loading work.jtag_package(fast)
+# Loading work.jtag_defines_svh_unit(fast)
+# Loading work.jtag_tb_top(fast)
+# Loading work.jtag_inf(fast__1)
+# Loading work.JTAG_top(fast)
+# Loading work.TAP_FSM(fast)
+# Loading work.instr_shift_reg(fast)
+# Loading work.instr_decoder(fast)
+# Loading work.TDR(fast)
+# Loading work.shift_register(fast)
+# Loading work.bsc(fast)
+run -all
+# ** Note: $finish    : ../tb/jtag_tb_top.sv(44)
+#    Time: 4700 ns  Iteration: 0  Instance: /jtag_tb_top
+# 1
+# Break in Module jtag_tb_top at ../tb/jtag_tb_top.sv line 44
+# couldn't load library "C:/questasim64_2024.1/win64/ScintillaTk/ScintillaTk114.dll": this library or a dependent library could not be found in library path
+# list element in quotes followed by ":" instead of space
+add wave -position insertpoint  \
+sim:/jtag_tb_top/jtag_top_inst/tap_fsm_curr_state
+restart -f
+# Loading work.jtag_package(fast)
+# Loading work.jtag_defines_svh_unit(fast)
+# Loading work.jtag_tb_top(fast)
+# Loading work.jtag_inf(fast__1)
+# Loading work.JTAG_top(fast)
+# Loading work.TAP_FSM(fast)
+# Loading work.instr_shift_reg(fast)
+# Loading work.instr_decoder(fast)
+# Loading work.TDR(fast)
+# Loading work.shift_register(fast)
+# Loading work.bsc(fast)
+run -all
+# ** Note: $finish    : ../tb/jtag_tb_top.sv(44)
+#    Time: 4700 ns  Iteration: 0  Instance: /jtag_tb_top
+# 1
+# Break in Module jtag_tb_top at ../tb/jtag_tb_top.sv line 44
+# couldn't load library "C:/questasim64_2024.1/win64/ScintillaTk/ScintillaTk114.dll": this library or a dependent library could not be found in library path
+# list element in quotes followed by ":" instead of space
+add wave -position insertpoint  \
+sim:/jtag_tb_top/jtag_top_inst/ir_hold_reg
+restart -f
+# Loading work.jtag_package(fast)
+# Loading work.jtag_defines_svh_unit(fast)
+# Loading work.jtag_tb_top(fast)
+# Loading work.jtag_inf(fast__1)
+# Loading work.JTAG_top(fast)
+# Loading work.TAP_FSM(fast)
+# Loading work.instr_shift_reg(fast)
+# Loading work.instr_decoder(fast)
+# Loading work.TDR(fast)
+# Loading work.shift_register(fast)
+# Loading work.bsc(fast)
+run -all
+# ** Note: $finish    : ../tb/jtag_tb_top.sv(44)
+#    Time: 4700 ns  Iteration: 0  Instance: /jtag_tb_top
+# 1
+# Break in Module jtag_tb_top at ../tb/jtag_tb_top.sv line 44
+# couldn't load library "C:/questasim64_2024.1/win64/ScintillaTk/ScintillaTk114.dll": this library or a dependent library could not be found in library path
+# list element in quotes followed by ":" instead of space
+write format wave -window .main_pane.wave.interior.cs.body.pw.wf C:/DBS/projects/JTAG/rtl_freezed/quest_simu/wave.do
+# End time: 14:46:44 on Aug 06,2026, Elapsed time: 0:03:16
+# Errors: 0, Warnings: 0

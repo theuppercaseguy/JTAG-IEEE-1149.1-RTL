@@ -1,0 +1,354 @@
+m255
+K4
+z2
+Z0 !s99 nomlopt
+R0
+R0
+R0
+!s11f vlog 2024.1 2024.02, Feb  1 2024
+13
+!s112 1.1
+!i10d 8192
+!i10e 25
+!i10f 100
+cModel Technology
+Z1 dC:/DBS/projects/JTAG/rtl_freezed/quest_simu
+vbsc
+Z2 2../rtl/jtag_defines.svh|../rtl/jtag_package.sv|../rtl/jtag_interface.sv|../rtl/TAP_FSM.sv|../rtl/shift_register.sv|../rtl/bsc.sv|../rtl/shift_ir.sv|../rtl/instr_decoder.sv|../rtl/TDR.sv|../rtl/JTAG_top.sv|../tb/jtag_tb_top.sv
+Z3 DXx6 sv_std 3 std 0 22 9oUSJO;AeEaW`l:M@^WG92
+Z4 DXx4 work 12 jtag_package 0 22 :I:mJbmGZ[V8VI^O1BEB`0
+Z5 DXx4 work 21 jtag_defines_svh_unit 0 22 `;P:8R;iQiAW>KRozz:V00
+Z6 !s110 1786009408
+Z7 VDg1SIo80bB@j0V0VzS_@n1
+r1
+!s85 0
+!i10b 1
+!s100 ]C[WnIRoz4CkjL[cGS9N80
+IWE`cn4XeC57RZ[e?@@fbd3
+Z8 !s105 jtag_defines_svh_unit
+S1
+R1
+w1786008165
+Z9 8../rtl/bsc.sv
+Z10 F../rtl/bsc.sv
+!i122 5
+L0 36 41
+Z11 OL;L;2024.1;79
+31
+Z12 !s108 1786009408.000000
+Z13 !s107 ../tb/jtag_tb_top.sv|../rtl/JTAG_top.sv|../rtl/TDR.sv|../rtl/instr_decoder.sv|../rtl/shift_ir.sv|../rtl/bsc.sv|../rtl/shift_register.sv|../rtl/TAP_FSM.sv|../rtl/jtag_interface.sv|../rtl/jtag_package.sv|../rtl/jtag_defines.svh|
+Z14 !s90 -reportprogress|300|-mfcu|-f|../rtl/file_list.f|
+!i113 0
+Z15 o-mfcu -L mtiAvm -L mtiRnm -L mtiOvm -L mtiUvm -L mtiUPF -L infact
+Z16 tCvgOpt 0
+Tijtag_tb_opt
+R6
+V=FU[HdzzK<_Ee]3hXE[Ee0
+04 11 4 work jtag_tb_top fast 0
+R0
+!s12f OEM100
+!s12b OEM100
+!s124 OEM100
+o+acc
+R16
+nijtag_tb_opt
+OL;O;2024.1;79
+vinstr_decoder
+R2
+R3
+R4
+R5
+R6
+R7
+r1
+!s85 0
+!i10b 1
+!s100 HW@EgZUA]Ihi]XN6?WXMf2
+ILVG@[=@Tkm<Cbc`EF4VYb3
+R8
+S1
+R1
+w1785224106
+Z17 8../rtl/instr_decoder.sv
+Z18 F../rtl/instr_decoder.sv
+!i122 5
+L0 4 52
+R11
+31
+R12
+R13
+R14
+!i113 0
+R15
+R16
+vinstr_shift_reg
+R2
+R3
+R4
+R5
+R6
+R7
+r1
+!s85 0
+!i10b 1
+!s100 4iITMf:IOPlA7Po^F^[7I3
+IB3PYCZ=@JgAWTDkeYAlOY2
+R8
+S1
+R1
+w1786008454
+Z19 8../rtl/shift_ir.sv
+Z20 F../rtl/shift_ir.sv
+!i122 5
+L0 16 51
+R11
+31
+R12
+R13
+R14
+!i113 0
+R15
+R16
+Xjtag_defines_svh_unit
+R2
+R3
+R4
+R6
+V`;P:8R;iQiAW>KRozz:V00
+r1
+!s85 0
+!i10b 1
+!s100 flOgNkonaN4;9CC[A:A]e0
+I`;P:8R;iQiAW>KRozz:V00
+!i103 1
+S1
+R1
+Z21 w1786009396
+8../rtl/jtag_defines.svh
+F../rtl/jtag_defines.svh
+Z22 8../rtl/jtag_package.sv
+Z23 F../rtl/jtag_package.sv
+Z24 8../rtl/jtag_interface.sv
+Z25 F../rtl/jtag_interface.sv
+Z26 8../rtl/TAP_FSM.sv
+Z27 F../rtl/TAP_FSM.sv
+Z28 8../rtl/shift_register.sv
+Z29 F../rtl/shift_register.sv
+R9
+R10
+R19
+R20
+R17
+R18
+Z30 8../rtl/TDR.sv
+Z31 F../rtl/TDR.sv
+Z32 8../rtl/JTAG_top.sv
+Z33 F../rtl/JTAG_top.sv
+Z34 8../tb/jtag_tb_top.sv
+Z35 F../tb/jtag_tb_top.sv
+!i122 5
+L0 37 0
+R11
+31
+R12
+R13
+R14
+!i113 0
+R15
+R16
+Yjtag_inf
+R2
+R3
+R4
+R5
+R6
+R7
+r1
+!s85 0
+!i10b 1
+!s100 T[CImLc>9^9ckAOlonKoI2
+I673k?cJPI:1=cWM^aW=@k1
+R8
+S1
+R1
+w1785224144
+R24
+R25
+!i122 5
+L0 39 0
+R11
+31
+R12
+R13
+R14
+!i113 0
+R15
+R16
+Xjtag_package
+R2
+R3
+R6
+!i10b 1
+!s100 k6bDNckJb6:WkZ6NhcF>N2
+I:I:mJbmGZ[V8VI^O1BEB`0
+S1
+R1
+w1785224161
+R22
+R23
+!i122 5
+L0 18 0
+V:I:mJbmGZ[V8VI^O1BEB`0
+R11
+r1
+!s85 0
+31
+R12
+R13
+R14
+!i113 0
+R15
+R16
+vjtag_tb_top
+R2
+R3
+R4
+R5
+R6
+R7
+r1
+!s85 0
+!i10b 1
+!s100 jn]6L0jETCoK4^1f@=?g;2
+I2^AigMc9UzQZfj9K`cA4C2
+R8
+S1
+R1
+w1785224889
+R34
+R35
+!i122 5
+L0 2 46
+R11
+31
+R12
+R13
+R14
+!i113 0
+R15
+R16
+vJTAG_top
+R2
+R3
+R4
+R5
+R6
+R7
+r1
+!s85 0
+!i10b 1
+!s100 WK3d8ABiKC]UVB76_h9@A2
+IVAO6l>I5Xcg:Fcz2OIHXK1
+R8
+S1
+R1
+R21
+R32
+R33
+!i122 5
+L0 28 131
+R11
+31
+R12
+R13
+R14
+!i113 0
+R15
+R16
+n@j@t@a@g_top
+vshift_register
+R2
+R3
+R4
+R5
+R6
+R7
+r1
+!s85 0
+!i10b 1
+!s100 R?9^cJ=HD_`k^VNb0`j2:0
+IF5@IPkI@QT2Id68>z^=cg2
+R8
+S1
+R1
+w1785224190
+R28
+R29
+!i122 5
+L0 5 34
+R11
+31
+R12
+R13
+R14
+!i113 0
+R15
+R16
+vTAP_FSM
+R2
+R3
+R4
+R5
+R6
+R7
+r1
+!s85 0
+!i10b 1
+!s100 BnM30iFF01Q?A@P9]?KJl0
+IF2^:07]?ao]F[On26gSLI1
+R8
+S1
+R1
+w1786009338
+R26
+R27
+!i122 5
+L0 16 42
+R11
+31
+R12
+R13
+R14
+!i113 0
+R15
+R16
+n@t@a@p_@f@s@m
+vTDR
+R2
+R3
+R4
+R5
+R6
+R7
+r1
+!s85 0
+!i10b 1
+!s100 7NXeD6EZz0^7YIFPm_8QC2
+IVF0AIePklBjfVWlkIIRCQ2
+R8
+S1
+R1
+w1786008472
+R30
+R31
+!i122 5
+L0 39 160
+R11
+31
+R12
+R13
+R14
+!i113 0
+R15
+R16
+n@t@d@r

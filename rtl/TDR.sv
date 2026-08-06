@@ -1,4 +1,19 @@
 //==============================================================================
+//  Project    : IEEE 1149.1 JTAG / IEEE 1687 IJTAG RTL Implementation
+//  Author     : Saad Khan
+//  Email      : saadan06@gmail.com
+//  GitHub     : https://github.com/theuppercaseguy
+//  LinkedIn   : https://www.linkedin.com/in/the-guy/
+//  Portfolio  : https://portfolio-saadkhan.vercel.app/
+//------------------------------------------------------------------------------
+//  Copyright (c) Saad Khan.
+//
+//  This project is open for educational, research, and commercial use.
+//  Redistribution and modification are permitted, provided appropriate
+//  credit is given to the original author and this repository is referenced.
+//==============================================================================
+
+//==============================================================================
 // Module      : TDR (Test Data Register)
 // Standard    : IEEE Std 1149.1
 //
@@ -29,8 +44,10 @@ module TDR import jtag_package::*;
   input tclk,
   input trst,
   input tdi,
-  input logic [IR_WIDTH-1:0] ir_hold_reg,
-  input tap_state_t tap_fsm_curr_state,
+
+  input logic shift_dr_en, capture_dr_en, update_dr_en,
+  input logic mode,
+  input tdr_avlbl_t tdr_selected,
 
   input logic [CORE_IN_PORTS-1:0]  io_in,          // External input pins
   input logic [CORE_IN_PORTS-1:0]  io_logic_out,   // Core outputs
@@ -45,16 +62,13 @@ module TDR import jtag_package::*;
   // Captures logic 0 during Capture-DR and shifts serial data during Shift-DR.
   //--------------------------------------------------------------------------
   logic bypass_reg;
-
   always_ff @(posedge tclk)
   begin
-    if(tap_fsm_curr_state == CAP_DR)
+    if(capture_dr_en)
       bypass_reg <= 0;
-
-    if(tap_fsm_curr_state == SHIFT_DR)
+    if(shift_dr_en)
       bypass_reg <= tdi;
   end
-
 
   //--------------------------------------------------------------------------
   // IDCODE Register
@@ -68,10 +82,8 @@ module TDR import jtag_package::*;
   shift_idcode_reg(
     .clk     (tclk),
     .rst_n   (trst),
-    .state   (tap_fsm_curr_state == CAP_DR ?
-            PAR_IN :
-            (tap_fsm_curr_state == SHIFT_DR ?
-              SER_IN : DISABLE)),
+    .state   (capture_dr_en ? PAR_IN :
+         (shift_dr_en   ? SER_IN : DISABLE)),
     .ser_in  (tdi),
     .par_in  (ID_CODE_REG_DEF_VAL),
 
@@ -84,25 +96,12 @@ module TDR import jtag_package::*;
   // Boundary Scan Register (BSR)
   //--------------------------------------------------------------------------
   genvar i;
-
-  logic mode;                          // Boundary-scan mode control
   logic [BSC_COUNT-1:0] bsc_chain;     // Complete BSR scan chain
+  logic bsr_capture_dr, bsr_update_dr, bsr_shift_dr;  // Enable Boundary Scan control signals only when BSR is selected
 
-  // TAP-derived Boundary Scan control signals
-  logic capture_dr, update_dr, shift_dr;
-
-  assign capture_dr = (tap_fsm_curr_state == CAP_DR);
-  assign update_dr  = ~tclk & (tap_fsm_curr_state == UPDATE_DR);
-  assign shift_dr   = (tap_fsm_curr_state == SHIFT_DR);
-
-
-  // Enable Boundary Scan control signals only when BSR is selected
-  logic bsr_capture_dr, bsr_update_dr, bsr_shift_dr;
-  tdr_avlbl_t tdr_selected;
-
-  assign bsr_capture_dr = (tdr_selected == TDR_BSR) ?  capture_dr  : 1'b0;
-  assign bsr_shift_dr   = shift_dr;
-  assign bsr_update_dr  = update_dr;
+  assign bsr_capture_dr = (tdr_selected == TDR_BSR) ?  capture_dr_en  : 1'b0;
+  assign bsr_shift_dr   = /*~tclk & */shift_dr_en;
+  assign bsr_update_dr  = update_dr_en;
 
   /*
                                INPUT BOUNDARY SCAN CELLS                         OUTPUT BOUNDARY SCAN CELLS
@@ -110,7 +109,7 @@ module TDR import jtag_package::*;
         io_in[3]      io_in[2]      io_in[1]      io_in[0]      io_logic_out[3] io_logic_out[2] io_logic_out[1] io_logic_out[0]
            │             │             │             │               │              │               │              │
            ▼             ▼             ▼             ▼               ▼              ▼               ▼              ▼
-TDI ──▶ [BSC7] ─────▶ [BSC6] ─────▶ [BSC5] ─────▶ [BSC4] ────▶ [BSC3] ──────▶ [BSC2] ───────▶ [BSC1] ─────▶ [BSC0] ──▶ TDO
+TDI ──▶ [BSC7] ─────▶ [BSC6] ─────▶ [BSC5] ─────▶ [BSC4] ───────▶ [BSC3] ──────▶ [BSC2] ───────▶ [BSC1] ──────▶ [BSC0] ──▶ TDO
           │             │             │             │               │               │               │              │
           ▼             ▼             ▼             ▼               ▼               ▼               ▼              ▼
     io_logic_in[3]  io_logic_in[2] io_logic_in[1] io_logic_in[0]  io_out[3]     io_out[2]       io_out[1]       io_out[0]
@@ -155,12 +154,11 @@ TDI ──▶ [BSC7] ─────▶ [BSC6] ─────▶ [BSC5] ──�
 
         .sys_in      (io_logic_out[CORE_OUT_PORTS-1-i]),   // Core output
         .from_bsc_in (i==0 ? bsc_chain[BSC_COUNT-CORE_IN_PORTS] :
-                    bsc_chain[(BSC_COUNT - CORE_IN_PORTS)-i]),  // Previous scan cell
+                   bsc_chain[(BSC_COUNT - CORE_IN_PORTS)-i]),  // Previous scan cell
 
         .capture_dr  (bsr_capture_dr),
         .update_dr   (bsr_update_dr),
         .shift_dr    (bsr_shift_dr),
-
         .mode_ctrl   (mode),
 
         .sys_out     (io_out[CORE_OUT_PORTS-1-i]),              // External output pin
@@ -169,19 +167,6 @@ TDI ──▶ [BSC7] ─────▶ [BSC6] ─────▶ [BSC5] ──�
     end
 
   endgenerate
-
-
-  //--------------------------------------------------------------------------
-  // Instruction Decoder
-  // Decodes the current instruction to select the active Test Data Register
-  // and generate Boundary Scan mode control.
-  //--------------------------------------------------------------------------
-  instr_decoder #(.IR_WIDTH(IR_WIDTH))
-  instr_decoder_i (
-    .ir_reg       (ir_hold_reg),
-    .mode_ctrl    (mode),
-    .tdr_selected (tdr_selected)
-  );
 
 
   //--------------------------------------------------------------------------

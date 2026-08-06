@@ -1,11 +1,27 @@
+//==============================================================================
+//  Project    : IEEE 1149.1 JTAG / IEEE 1687 IJTAG RTL Implementation
+//  Author     : Saad Khan
+//  Email      : saadan06@gmail.com
+//  GitHub     : https://github.com/theuppercaseguy
+//  LinkedIn   : https://www.linkedin.com/in/the-guy/
+//  Portfolio  : https://portfolio-saadkhan.vercel.app/
+//------------------------------------------------------------------------------
+//  Copyright (c) Saad Khan.
+//
+//  This project is open for educational, research, and commercial use.
+//  Redistribution and modification are permitted, provided appropriate
+//  credit is given to the original author and this repository is referenced.
+//==============================================================================
+
 module TAP_FSM import jtag_package::*;(
-	input  logic TCK, TRST,
+	input  logic TCLK, TRST,
 	input  logic TMS,
+
+	output logic shift_dr_en, capture_dr_en, update_dr_en,
 	output tap_state_t tap_state  // Asynchronous reset active low
 );
 	tap_state_t curr_state, next_state;
-
-	always_ff @(posedge TCK or negedge TRST) begin
+	always_ff @(posedge TCLK or negedge TRST) begin
 		if(!TRST)
 			curr_state <= RST;              // async reset forces Test-Logic-Reset, independent of TMS
 		else
@@ -34,6 +50,8 @@ module TAP_FSM import jtag_package::*;(
 		endcase
 	end
 
-	assign tap_state = curr_state;         // combinational output, reflects current state every cycle
-
+	assign tap_state     = curr_state;         // combinational output, reflects current state every cycle
+	assign capture_dr_en = curr_state == CAP_DR   ;
+	assign shift_dr_en   = curr_state == SHIFT_DR ;
+	assign update_dr_en  = curr_state == UPDATE_DR;
 endmodule : TAP_FSM

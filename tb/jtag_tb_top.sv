@@ -6,10 +6,7 @@ module jtag_tb_top;
 
 	jtag_inf jtag_intf(clk);
 
-	JTAG_top #(
-		// .BSC_COUNT(4),
-		// .IR_WIDTH(4)
-	)jtag_top_inst(
+	JTAG_top jtag_top_inst(
 		.inf(jtag_intf)
 	);
 

@@ -1,0 +1,64 @@
+# //  Questa Sim-64
+# //  Version 2024.1 win64 Feb  1 2024
+# //
+# // Unpublished work. Copyright 2024 Siemens
+# //
+# // This material contains trade secrets or otherwise confidential information
+# // owned by Siemens Industry Software Inc. or its affiliates (collectively,
+# // "SISW"), or its licensors. Access to and use of this information is strictly
+# // limited as set forth in the Customer's applicable agreements with SISW.
+# //
+# // This material may not be copied, distributed, or otherwise disclosed outside
+# // of the Customer's facilities without the express written permission of SISW,
+# // and may not be used in any way not expressly authorized by SISW.
+# //
+# do {.\comp.do}
+# ** Warning: (vlib-34) Library already exists at "work".
+# Errors: 0, Warnings: 1
+# QuestaSim-64 vmap 2024.1 Lib Mapping Utility 2024.02 Feb  1 2024
+# vmap work work 
+# Modifying modelsim.ini
+# QuestaSim-64 vlog 2024.1 Compiler 2024.02 Feb  1 2024
+# Start time: 14:43:28 on Aug 06,2026
+# vlog -reportprogress 300 -mfcu -f ../rtl/file_list.f 
+# -- Compiling package jtag_package
+# -- Compiling package jtag_defines_svh_unit
+# -- Importing package jtag_package
+# -- Compiling interface jtag_inf
+# -- Compiling module TAP_FSM
+# -- Compiling module shift_register
+# -- Compiling module bsc
+# -- Compiling module instr_shift_reg
+# -- Compiling module instr_decoder
+# -- Compiling module TDR
+# -- Compiling module JTAG_top
+# -- Compiling module jtag_tb_top
+# 
+# Top level modules:
+# 	jtag_tb_top
+# End time: 14:43:28 on Aug 06,2026, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# QuestaSim-64 vopt 2024.1 Compiler 2024.02 Feb  1 2024
+# ** Warning: (vopt-10587) Some optimizations are turned off because the +acc switch is in effect. This will cause your simulation to run slowly. Please use -access/-debug to maintain needed visibility.
+# Start time: 14:43:28 on Aug 06,2026
+# vopt -reportprogress 300 jtag_tb_top -o ijtag_tb_opt "+acc" 
+# 
+# Top level modules:
+# 	jtag_tb_top
+# Support of the MGLS_LICENSE_FILE and LM_LICENSE_FILE licensing environment variables will be discontinued starting with the 2025.1 release. Please update to using the SALT_LICENSE_SERVER variable.
+# Please contact Siemens EDA Customer Support (https://support.sw.siemens.com/) for assistance.
+# 
+# Analyzing design...
+# -- Loading module jtag_tb_top
+# -- Loading interface jtag_inf
+# -- Loading module JTAG_top
+# -- Loading module TAP_FSM
+# -- Loading module instr_shift_reg
+# -- Loading module instr_decoder
+# -- Loading module TDR
+# -- Loading module shift_register
+# -- Loading module bsc
+# Incremental compilation check found no design-units have changed.
+# Optimized design name is ijtag_tb_opt
+# End time: 14:43:28 on Aug 06,2026, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 1

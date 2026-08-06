@@ -26,9 +26,9 @@
 
 
 module JTAG_top import jtag_package::*;#(
-		parameter IR_WIDTH 	   = IR_WIDTH,
-		parameter BSC_COUNT	   = BSC_COUNT,
-		parameter IDCODE_WIDTH = IDCODE_WIDTH
+		parameter IR_WIDTH 	   = jtag_package::IR_WIDTH,
+		parameter BSC_COUNT	   = jtag_package::BSC_COUNT,
+		parameter IDCODE_WIDTH = jtag_package::IDCODE_WIDTH
 	)(
 		jtag_inf inf
 	);
@@ -39,19 +39,21 @@ module JTAG_top import jtag_package::*;#(
 	// All IR/DR operations are controlled using this state machine.
 	//-------------------------------------------------------------------------
 	tap_state_t tap_fsm_curr_state;
+	logic shift_dr_en, capture_dr_en, update_dr_en;
 	TAP_FSM tap_fsm_inst(
 		.TRST     (inf.trst),
-		.TCK      (inf.tclk),
+		.TCLK      (inf.tclk),
 		.TMS      (inf.tms),
 
-		.tap_state(tap_fsm_curr_state)
+		.tap_state(tap_fsm_curr_state),
+
+	    .shift_dr_en  (shift_dr_en),
+	    .capture_dr_en(capture_dr_en),
+	    .update_dr_en (update_dr_en)
 	);
 
 	//-------------------------------------------------------------------------
 	// Instruction Register (IR)
-	//
-	// intm_ir_hold_reg :
-	//     Shift register contents while shifting an instruction.
 	//
 	// ir_hold_reg :
 	//     Active instruction register used by the instruction decoder.
@@ -60,29 +62,34 @@ module JTAG_top import jtag_package::*;#(
 	// ir_reg_lsb :
 	//     Serial TDO output of the IR shift register.
 	//-------------------------------------------------------------------------
-	logic [IR_WIDTH-1:0] ir_hold_reg, intm_ir_hold_reg;
+	logic [IR_WIDTH-1:0] ir_hold_reg;
 	logic ir_reg_lsb;
 
-	shift_ir #(.IR_WIDTH(IR_WIDTH))
-	ir_reg	(
-		.tck         (inf.tclk),
+	instr_shift_reg #(.IR_WIDTH(IR_WIDTH))
+	instr_reg(
+		.tclk        (inf.tclk 						  ),
+		.trst_n      (inf.trst  					  ),
 
-		// Reset IR shift register during:
-		//  1. External TRST assertion
-		//  2. TAP Test-Logic-Reset state
-		//  3. Capture-IR state (loads IEEE mandated capture pattern)
-		.trst        ( ~(!inf.trst || tap_fsm_curr_state == RST || tap_fsm_curr_state == CAP_IR)),
+		.tdi         (inf.tdi 						  ),
+		.tap_fsm_curr_state         (tap_fsm_curr_state 						  ),
+		.tdo         (ir_reg_lsb					  ),// Serial output towards TDO mux
+		
+		.ir_hold_reg (ir_hold_reg)// Current contents of the IR shift register
+	);
 
-		.tdi         (inf.tdi),
+	//--------------------------------------------------------------------------
+	// Instruction Decoder
+	// Decodes the current instruction to select the active Test Data Register
+	// and generate Boundary Scan mode control.
+	//--------------------------------------------------------------------------
+	tdr_avlbl_t tdr_selected;
+	logic mode;
+	instr_decoder #(.IR_WIDTH(IR_WIDTH))
+	instr_decoder_i (
+		.ir_reg       (ir_hold_reg),
 
-		// Enable shifting only during SHIFT_IR
-		.shift_en    (tap_fsm_curr_state == SHIFT_IR),
-
-		// Serial output towards TDO mux
-		.tdo         (ir_reg_lsb),
-
-		// Current contents of the IR shift register
-		.ir_hold_reg (intm_ir_hold_reg)
+		.mode_ctrl    (mode),
+		.tdr_selected (tdr_selected)
 	);
 
 	//-------------------------------------------------------------------------
@@ -99,39 +106,26 @@ module JTAG_top import jtag_package::*;#(
 	//     Serial output of currently selected data register.
 	//-------------------------------------------------------------------------
 	logic dr_reg_lsb;
-
 	TDR #( 
 		.BSC_COUNT					(BSC_COUNT),
 	  	.IR_WIDTH  					(IR_WIDTH),
 	  	.IDCODE_WIDTH				(IDCODE_WIDTH)
-    )tdr_inst(
+    )tdr(
 		.tclk						(inf.tclk), 
-
-		// Reset active data registers whenever TAP enters reset state
 		.trst						(inf.trst || ~(tap_fsm_curr_state == RST)), 
 
 		.tdi						(inf.tdi), 
+		.capture_dr_en				(capture_dr_en), 
+		.shift_dr_en				(shift_dr_en), 
+		.update_dr_en				(update_dr_en), 
+		.mode						(mode),
+		.tdr_selected				(tdr_selected),
+		.io_in						(inf.io_in),// Boundary scan input pins
+		.io_logic_out				(inf.io_logic_out),// Core outputs entering output-side BSCs
 
-		// Currently active instruction
-		.ir_hold_reg				(ir_hold_reg), 
-
-		// Current TAP state used for DR control
-		.tap_fsm_curr_state	        (tap_fsm_curr_state),
-
-		// Boundary scan input pins
-		.io_in						(inf.io_in),
-
-		// Core outputs entering output-side BSCs
-		.io_logic_out				(inf.io_logic_out),
-
-		// Boundary scan driven output pins
-		.io_out						(inf.io_out),
-
-		// Input-side BSC outputs towards core logic
-		.io_logic_in  				(inf.io_logic_in),
-
-		// Serial output of selected TDR
-		.tdo 						(dr_reg_lsb)
+		.io_logic_in  				(inf.io_logic_in),// Input-side BSC outputs towards core logic
+		.io_out						(inf.io_out),// Boundary scan driven output pins
+		.tdo 						(dr_reg_lsb)// Serial output of selected TDR
     );
 
 	//-------------------------------------------------------------------------
@@ -147,17 +141,13 @@ module JTAG_top import jtag_package::*;#(
 	//-------------------------------------------------------------------------
 	always_ff @(negedge inf.tclk)
 	begin
-		// Latch newly shifted instruction into active instruction register
-		if(tap_fsm_curr_state == UPDATE_IR)
-			ir_hold_reg <= intm_ir_hold_reg;
+		// Tri-state TDO whenever not actively shifting
+		if(tap_fsm_curr_state != SHIFT_IR && tap_fsm_curr_state != SHIFT_DR)
+			inf.tdo <= 'bz;
 
 		// Drive IR serial data during SHIFT_IR
 		if(tap_fsm_curr_state == SHIFT_IR)
 			inf.tdo <= ir_reg_lsb;
-
-		// Tri-state TDO whenever not actively shifting
-		if(tap_fsm_curr_state != SHIFT_IR && tap_fsm_curr_state != SHIFT_DR)
-			inf.tdo <= 'bz;
 
 		// Drive DR serial data during SHIFT_DR
 		if(tap_fsm_curr_state == SHIFT_DR)
