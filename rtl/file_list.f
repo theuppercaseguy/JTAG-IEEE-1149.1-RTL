@@ -4,7 +4,7 @@
 ./rtl/TAP_FSM.sv
 ./rtl/shift_register.sv
 ./rtl/bsc.sv
-./rtl/shift_ir.sv
+./rtl/instr_register.sv
 ./rtl/instr_decoder.sv
 ./rtl/TDR.sv
 ./rtl/JTAG_top.sv
